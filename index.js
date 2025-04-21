@@ -1,17 +1,29 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const serverless = require("serverless-http");
 
 const verifyBearerToken = require("./helpers/verify-auth.js");
 const verifyAvailableMeetingDates = require("./utils/verifyAvailableMeetingDates.js");
 
-app.use(cors({
-    origin: ["http://localhost:5173", "https://pass-gallery-form.web.app"],
-    methods: ["GET", "POST", "OPTIONS"],  // Incluindo OPTIONS
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
-}));
+// Cors
+const allowedOrigins = [
+    "https://pass-gallery-form.web.app", 
+    "http://localhost:5173"
+];
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.header("Access-Control-Allow-Origin", origin);
+    }
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,PATCH,DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    if (req.method === "OPTIONS") {
+        return res.status(200).end();
+    }
+    next();
+});
+
+// API Configurations
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public/assets"));
