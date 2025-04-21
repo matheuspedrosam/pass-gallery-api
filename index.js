@@ -1,12 +1,13 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const serverless = require("serverless-http");
 
 const verifyBearerToken = require("./helpers/verify-auth.js");
 const verifyAvailableMeetingDates = require("./utils/verifyAvailableMeetingDates.js");
 
 app.use(cors({
-    origin: ["http://localhost:5173", "pass-gallery-form.web.app"],
+    origin: ["http://localhost:5173", "https://pass-gallery-form.web.app"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -30,6 +31,6 @@ app.get("/availablemeetingdates", verifyAvailableMeetingDates);
 app.use("", (req, res) => res.status(404).json({ error: "Page not found." }));
 
 
-// Listener
-const port = 3000;
-app.listen(port, () => console.log(`http://localhost:${port}`));
+// Listener (Vercel)
+module.exports = app;
+module.exports.handler = serverless(app);
