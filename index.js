@@ -8,8 +8,9 @@ const verifyAvailableMeetingDates = require("./utils/verifyAvailableMeetingDates
 
 app.use(cors({
     origin: ["http://localhost:5173", "https://pass-gallery-form.web.app"],
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    methods: ["GET", "POST", "OPTIONS"],  // Incluindo OPTIONS
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
