@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 const verifyBearerToken = require("./helpers/verify-auth.js");
 const verifyAvailableMeetingDates = require("./utils/verifyAvailableMeetingDates.js");
