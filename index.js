@@ -1,13 +1,11 @@
 const express = require("express");
 const app = express();
 const serverless = require("serverless-http");
-
 const verifyBearerToken = require("./helpers/verify-auth.js");
-const verifyAvailableMeetingDates = require("./utils/verifyAvailableMeetingDates.js");
 
 // Cors
 const allowedOrigins = [
-    "https://pass-gallery-form.web.app", 
+    "https://pass-gallery.web.app", 
     "http://localhost:5173"
 ];
 app.use((req, res, next) => {
@@ -30,6 +28,7 @@ app.use(express.static("public/assets"));
 
 // Routes
 const clientRoutes = require("./routes/clientRoutes.js");
+const { verifyAvailableMeetingDates } = require("./services/calendar.js");
 
 // Public Route
 app.get("/", (req, res) => res.json({ message: "Pass Gallery Api." }));
@@ -38,7 +37,7 @@ app.get("/", (req, res) => res.json({ message: "Pass Gallery Api." }));
 app.use(verifyBearerToken);
 
 app.use("/clients", clientRoutes);
-app.get("/availablemeetingdates", verifyAvailableMeetingDates);
+app.get("/services/availablemeetingdates", verifyAvailableMeetingDates);
 
 // 404 handler
 app.use("", (req, res) => res.status(404).json({ error: "Page not found." }));
