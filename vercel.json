@@ -12,7 +12,8 @@
             "dest": "/index.js",
             "methods": [
                 "GET",
-                "POST"
+                "POST",
+                "OPTIONS"
             ]
         }
     ]
